@@ -7,9 +7,10 @@ http://support.universal-robots.com/URRobot/RemoteAccess
 import logging
 import numbers
 import collections
+import time
 
-from urx import urrtmon
-from urx import ursecmon
+from python_urx import urrtmon
+from python_urx import ursecmon
 
 __author__ = "Olivier Roulet-Dubonnet"
 __copyright__ = "Copyright 2011-2015, Sintef Raufoss Manufacturing"
@@ -216,7 +217,9 @@ class URRobot(object):
         count = 0
         while True:
             if not self.is_running():
-                raise RobotException("Robot stopped")
+                time.sleep(0.1)
+                if not self.is_running():
+                    raise RobotException("Robot stopped")
             dist = self._get_dist(target, joints)
             self.logger.debug("distance to target is: %s, target dist is %s", dist, threshold)
             if not self.secmon.is_program_running():
@@ -263,7 +266,7 @@ class URRobot(object):
         vels = [round(i, self.max_float_length) for i in velocities]
         vels.append(acc)
         vels.append(min_time)
-        prog = "{}([{},{},{},{},{},{}], a={}, t_min={})".format(command, *vels)
+        prog = "{}([{},{},{},{},{},{}], a={}, t={})".format(command, *vels)
         self.send_program(prog)
 
     def movej(self, joints, acc=0.1, vel=0.05, wait=True, relative=False, threshold=None):
