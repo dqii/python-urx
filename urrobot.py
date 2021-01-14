@@ -9,8 +9,8 @@ import numbers
 import collections
 import time
 
-from python_urx import urrtmon
-from python_urx import ursecmon
+from . import urrtmon
+from . import ursecmon
 
 __author__ = "Olivier Roulet-Dubonnet"
 __copyright__ = "Copyright 2011-2015, Sintef Raufoss Manufacturing"
