@@ -23,7 +23,7 @@ class Robot(URRobot):
     and includes support for setting a reference coordinate system
     """
 
-    def __init__(self, host, use_rt=False):
+    def __init__(self, host="10.32.120.92", use_rt=False):
         URRobot.__init__(self, host, use_rt)
         self.csys = m3d.Transform()
 
@@ -276,9 +276,13 @@ class Robot(URRobot):
         p.z = val
         self.set_pos(p)
 
+    def get_rotation_vector(self, index):
+        p = self.get_pose()
+        return p.orient.rotation_vector[index]
+
     @property
     def rx(self):
-        return 0
+        return self.get_rotation_vector(0)
 
     @rx.setter
     def rx(self, val):
@@ -288,7 +292,7 @@ class Robot(URRobot):
 
     @property
     def ry(self):
-        return 0
+        return self.get_rotation_vector(1)
 
     @ry.setter
     def ry(self, val):
@@ -298,7 +302,7 @@ class Robot(URRobot):
 
     @property
     def rz(self):
-        return 0
+        return self.get_rotation_vector(2)
 
     @rz.setter
     def rz(self, val):
